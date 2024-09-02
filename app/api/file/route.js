@@ -21,7 +21,7 @@ export async function POST(request) {
       else if(line.trim().startsWith("Answer")) ans=line.charAt(line.length-1)
         else if(line.trim().charAt(0)=="A"||line.trim().charAt(0)=="B"||line.trim().charAt(0)=="C"||line.trim().charAt(0)=="D") options.push(line)
     })
-    return {Question:Q,options,answer:ans}
+    return {question:Q,options,answer:ans}
   })
     console.log(Array)
     

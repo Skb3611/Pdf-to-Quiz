@@ -1,9 +1,10 @@
 "use client";
 import Dropzone from "react-dropzone";
 import { useState } from "react";
+import QuizComponent from "./QuizComponent";
 const DropzoneComponent = () => {
   const [isFlie, setisFile] = useState(false);
-  const [text, settext] = useState(null)
+  const [data, setdata] = useState(null)
   let func = async (acceptedFiles) => {
     console.log(acceptedFiles[0])
     if (acceptedFiles) setisFile(!isFlie);
@@ -19,13 +20,13 @@ const DropzoneComponent = () => {
     });
     let res = await a.json()
     console.log(res)
-    settext(res.text[0])
+    setdata(res.text)
     // console.log(formData .get("file"))
   };
 
   return (
     <div>
-      {!isFlie && (
+      {!isFlie ? (
         <Dropzone onDrop={func} multiple={false}>
           {({ getRootProps, getInputProps }) => (
             <section>
@@ -71,20 +72,8 @@ const DropzoneComponent = () => {
               </div>
             </section>
           )}
-        </Dropzone>
-      )}
-      <div>
-        <span>
-          {text&&text.Question}
-          </span>
-        <span>
-          {text && text.options.map(item=>"Option : " + item)}
-          </span>
-        <span>
-          {text && "Answer : " + text.answer}
-          </span>
-        
-        </div>
+        </Dropzone>) : <QuizComponent data={data}/>
+      }
     </div>
   );
 };
