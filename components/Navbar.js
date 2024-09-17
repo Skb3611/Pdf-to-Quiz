@@ -1,6 +1,9 @@
+"use client"
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const Navbar = () => {
+  let router = useRouter()
   return (
     <div className="shadow-xl bg-white">
       <header className="text-gray-600 body-font">
@@ -21,8 +24,8 @@ const Navbar = () => {
             <span className="ml-3 text-xl">PDF to Test</span>
           </a>
 
-          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">
-            Home
+          <button className="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0" onClick={()=>{localStorage.clear();router.push("/")}} >
+           Home
             <svg
               fill="none"
               stroke="currentColor"

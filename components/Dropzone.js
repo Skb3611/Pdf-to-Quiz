@@ -1,10 +1,20 @@
 "use client";
 import Dropzone from "react-dropzone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuizComponent from "./QuizComponent";
+import { useRouter } from "next/navigation";
 const DropzoneComponent = () => {
   const [isFlie, setisFile] = useState(false);
-  const [data, setdata] = useState(null)
+  let router = useRouter()
+
+  useEffect(() => {
+    let localdata= localStorage.getItem("data")
+    console.log(localdata)
+    if(localdata){
+      router.push("/test")
+    }
+  }, [])
+  
   let func = async (acceptedFiles) => {
     console.log(acceptedFiles[0])
     if (acceptedFiles) setisFile(!isFlie);
@@ -19,14 +29,14 @@ const DropzoneComponent = () => {
       // }
     });
     let res = await a.json()
-    console.log(res)
-    setdata(res.text)
-    // console.log(formData .get("file"))
+    // console.log(res)
+    localStorage.setItem("data",JSON.stringify(res.text))
+router.push("/test")
   };
 
   return (
     <div>
-      {!isFlie ? (
+      
         <Dropzone onDrop={func} multiple={false}>
           {({ getRootProps, getInputProps }) => (
             <section>
@@ -72,8 +82,7 @@ const DropzoneComponent = () => {
               </div>
             </section>
           )}
-        </Dropzone>) : <QuizComponent data={data}/>
-      }
+        </Dropzone>
     </div>
   );
 };
