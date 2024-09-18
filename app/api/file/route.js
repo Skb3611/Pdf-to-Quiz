@@ -8,7 +8,11 @@ export const config = {
 };
 
 export async function POST(request) {
-  try {
+  let QuestionRegex=/^(Q?\d+[\.\)]?|Q\d+[\.\)]?)\s*/
+  let OptionRegex=/^[A-Za-z\d]\s*[\.\)]\s*|\(\s*[A-Za-z\d]+\s*\)\s*/
+  let AnsRegex= /(answer|ans|correct answer is)\s*[:\-]?\s*[A-Za-z\d]/i;
+
+  try{
     let body = await request.formData()
     let file = body.get('file')
     const arrayBuffer= await file.arrayBuffer()
@@ -17,14 +21,16 @@ export async function POST(request) {
   let Array= text.trim().split("\n \n").map(item=>{
     let Q,options=[],ans;
     item.trim().split("\n").map(line=>{
-      if(!isNaN(parseInt(line.charAt(0)))) Q=line;
-      else if(line.trim().startsWith("Answer")) ans=line.charAt(line.length-1)
-        else if(line.trim().charAt(0)=="A"||line.trim().charAt(0)=="B"||line.trim().charAt(0)=="C"||line.trim().charAt(0)=="D") options.push(line)
+      // if(!isNaN(parseInt(line.charAt(0)))) Q=line;
+      // console.log(line,QuestionRegex.test(line))
+      if(QuestionRegex.test(line)) Q= line
+      else if(AnsRegex.test(line)) ans=line
+        else if(OptionRegex.test(line)) options.push(line)
     })
   // console.log()
     return {question:Q,options,answer:ans}
   })
-    // console.log(text)
+    console.log(text)
     
 
     return NextResponse.json({text:Array})
